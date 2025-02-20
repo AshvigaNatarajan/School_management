@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educational Portal Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #1db2bf;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .banner {
+      background: linear-gradient(135deg, #bb7181, #b98f57);
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .banner h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .banner p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .banner-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      width: 80%;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    
+    .pattern {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 300px;
+      height: 300px;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px);
+      background-size: 20px 20px;
+      opacity: 0.5;
+      transform: rotate(15deg);
+    }
+    
+    .login-section {
+      background-color: white;
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .login-header h2 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .login-header p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+      color: #777;
+    }
+    
+    .tab.active {
+      color: #3a7bd5;
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #3a7bd5;
+    }
+    
+    .user-type-selector {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    
+    .user-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .user-type-option.active {
+      border-color: #80a3d4;
+      background-color: rgba(50, 44, 3, 0.082);
+    }
+    
+    .user-type-option:hover:not(.active) {
+      background-color: #decdda;
+    }
+    
+    .user-type-option i {
+      font-size: 24px;
+      margin-bottom: 8px;
+      display: block;
+      color: #5f97e0;
+    }
+    
+    .user-type-option span {
+      font-size: 0.9rem;
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus {
+      border-color: #f8969f;
+      outline: none;
+    }
+    
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
+    
+    .remember {
+      display: flex;
+      align-items: center;
+    }
+    
+    .remember input {
+      margin-right: 8px;
+    }
+    
+    .forgot-password {
+      color: #3a7bd5;
+      text-decoration: none;
+    }
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    .login-button {
+      background: linear-gradient(to right, #1a68dd, #1a68dd);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    .login-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .register-button {
+      background: linear-gradient(to right, #2db24d, #2db24d);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    .register-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .alternative-login {
+      text-align: center;
+      margin-top: auto;
+    }
+    
+    .alternative-login p {
+      color: #777;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .alternative-login p::before,
+    .alternative-login p::after {
+      content: "";
+      display: inline-block;
+      width: 40%;
+      height: 1px;
+      background: #ddd;
+      position: absolute;
+      top: 50%;
+    }
+    
+    .alternative-login p::before {
+      left: 0;
+    }
+    
+    .alternative-login p::after {
+      right: 0;
+    }
+    
+    .sso-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .sso-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #f5f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border: 1px solid #eee;
+    }
+    
+    .sso-button:hover {
+      background-color: #e9ecef;
+    }
+    
+    .sso-button.google {
+      color: #DB4437;
+    }
+    
+    .sso-button.github {
+      color: #333;
+    }
+    
+    .github-icon {
+      font-size: 1.5rem;
+    }
+    
+    .help-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+    
+    .help-text a {
+      color: #3a7bd5;
+      text-decoration: none;
+    }
+    
+    .help-text a:hover {
+      text-decoration: underline;
+    }
+    
+    .form-container {
+      display: none;
+    }
+    
+    .form-container.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        max-width: 400px;
+      }
+      
+      .banner {
+        padding: 30px;
+      }
+      
+      .banner h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    .status-message {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      text-align: center;
+      display: none;
+    }
+    
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="banner">
+      <h1>Learning Portal for School</h1>
+      <img src="https://cdn.pixabay.com/photo/2024/03/27/15/19/ai-generated-8659303_640.jpg" style="width:100%;height:100%;"><br>
+      <p>Access your personalized education dashboard for seamless learning and collaboration with us to make a better future.</p>
+      <div class="pattern"></div>
+    </div>
+    
+    <div class="login-section">
+      <div class="login-header">
+        <h2>Welcome to the School Portal</h2>
+      </div>
+      
+      <div class="tabs">
+        <div class="tab active" data-form="login-container">Login</div>
+        <div class="tab" data-form="register-container">Register</div>
+      </div>
+      
+      <div id="status-message" class="status-message"></div>
+      
+      <!-- Login Form Container -->
+      <div id="login-container" class="form-container active">
+        <p>Please select your role and enter the credentials </p>
+        <br>
+        <div class="user-type-selector">
+          <div class="user-type-option" id="student-option-login">
+            <i class="fas fa-user-graduate"></i>
+            <span>Student</span>
+          </div>
+          <div class="user-type-option active" id="teacher-option-login">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Teacher</span>
+          </div>
+          <div class="user-type-option" id="admin-option-login">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+          </div>
+        </div>
+        
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email-login">Email or ID</label>
+            <input type="text" id="email-login" placeholder="Enter your email or ID">
+          </div>
+          
+          <div class="form-group">
+            <label for="password-login">Password</label>
+            <input type="password" id="password-login" placeholder="Enter your password">
+          </div>
+          
+          <div class="options">
+            <div class="remember">
+              <input type="checkbox" id="remember-me">
+              <label for="remember-me">Remember me</label>
+            </div>
+            <a href="#" class="forgot-password">Forgot password?</a>
+          </div>
+          
+          <button type="submit" class="login-button">Log In</button>
+        </form>
+        
+        <div class="alternative-login">
+          <p>Or login with</p>
+          <div class="sso-buttons">
+            <div class="sso-button google" title="Login with Gmail" id="gmail-login">
+              <i class="fab fa-google fa-lg"></i>
+            </div>
+            <div class="sso-button github" title="Login with GitHub" id="github-login">
+              <i class="fab fa-github fa-lg github-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Register Form Container -->
+      <div id="register-container" class="form-container">
+        <div class="user-type-selector">
+          <div class="user-type-option" id="student-option-register">
+            <i class="fas fa-user-graduate"></i>
+            <span>Student</span>
+          </div>
+          <div class="user-type-option active" id="teacher-option-register">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Teacher</span>
+          </div>
+          <div class="user-type-option" id="admin-option-register">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+          </div>
+        </div>
+        
+        <form id="register-form">
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter your full name">
+          </div>
+          
+          <div class="form-group">
+            <label for="email-register">Email Address</label>
+            <input type="email" id="email-register" placeholder="Enter your email address">
+          </div>
+          
+          <div class="form-group">
+            <label for="password-register">Password</label>
+            <input type="password" id="password-register" placeholder="Create a password">
+          </div>
+          
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm your password">
+          </div>
+          
+          <button type="submit" class="register-button">Create Account</button>
+        </form>
+        
+        <div class="alternative-login">
+          <p>Or register with</p>
+          <div class="sso-buttons">
+            <div class="sso-button google" title="Register with Gmail" id="gmail-register">
+              <i class="fab fa-google fa-lg"></i>
+            </div>
+            <div class="sso-button github" title="Register with GitHub" id="github-register">
+              <i class="fab fa-github fa-lg github-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="help-text">
+        Need help? <a href="#">Contact support</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sample user database for demonstration
+      const users = {
+        'student@school.com': { password: 'student123', role: 'student', name: 'John Student' },
+        'teacher@school.com': { password: 'teacher123', role: 'teacher', name: 'Mary Teacher' },
+        'admin@school.com': { password: 'admin123', role: 'admin', name: 'Admin User' }
+      };
+      
+      // Tab switching functionality
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          // Hide all form containers
+          document.querySelectorAll('.form-container').forEach(container => {
+            container.classList.remove('active');
+          });
+          
+          // Show the selected form container
+          const formId = this.getAttribute('data-form');
+          document.getElementById(formId).classList.add('active');
+          
+          // Clear status message
+          document.getElementById('status-message').style.display = 'none';
+        });
+      });
+      
+      // User type selection for login
+      const loginOptions = document.querySelectorAll('[id^="student-option-"], [id^="teacher-option-"], [id^="admin-option-"]');
+      loginOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Get the form container this option belongs to
+          const container = this.id.includes('-login') ? 'login' : 'register';
+          const optionsInContainer = document.querySelectorAll(`[id$="-option-${container}"]`);
+          
+          // Remove active class from all options in this container
+          optionsInContainer.forEach(opt => opt.classList.remove('active'));
+          
+          // Add active class to clicked option
+          this.classList.add('active');
+          
+          // Update placeholder text based on role for the specific form
+          const role = this.id.split('-')[0];
+          const inputId = container === 'login' ? 'email-login' : 'email-register';
+          const emailInput = document.getElementById(inputId);
+          
+          switch(role) {
+            case 'student':
+              emailInput.placeholder = 'Enter student ID or email';
+              break;
+            case 'teacher':
+              emailInput.placeholder = 'Enter faculty email';
+              break;
+            case 'admin':
+              emailInput.placeholder = 'Enter admin credentials';
+              break;
+          }
+        });
+      });
+      
+      // Show status message
+      function showStatusMessage(message, type) {
+        const statusEl = document.getElementById('status-message');
+        statusEl.textContent = message;
+        statusEl.className = 'status-message';
+        statusEl.classList.add(type === 'success' ? 'success-message' : 'error-message');
+        statusEl.style.display = 'block';
+      }
+      
+      // Login form submission
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email-login').value;
+        const password = document.getElementById('password-login').value;
+        const roleOption = document.querySelector('#login-container .user-type-option.active');
+        const role = roleOption ? roleOption.id.split('-')[0] : null;
+        
+        if (!email || !password) {
+          showStatusMessage('Please enter both email and password', 'error');
+          return;
+        }
+        
+        if (users[email] && users[email].password === password && users[email].role === role) {
+          showStatusMessage(`Login successful! Redirecting to ${role} dashboard...`, 'success');
+          
+          // Simulate redirect after successful login
+          setTimeout(() => {
+            alert(`Welcome to the ${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard, ${users[email].name}!`);
+          }, 1500);
+        } else {
+          showStatusMessage('Invalid credentials. Please check your email, password, and selected role.', 'error');
+        }
+      });
+      
+      // Register form submission
+      document.getElementById('register-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('fullname').value;
+        const email = document.getElementById('email-register').value;
+        const password = document.getElementById('password-register').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        const roleOption = document.querySelector('#register-container .user-type-option.active');
+        const role = roleOption ? roleOption.id.split('-')[0] : null;
+        
+        if (!name || !email || !password || !confirmPassword) {
+          showStatusMessage('Please fill in all fields', 'error');
+          return;
+        }
+        
+        if (password !== confirmPassword) {
+          showStatusMessage('Passwords do not match', 'error');
+          return;
+        }
+        
+        if (users[email]) {
+          showStatusMessage('This email is already registered', 'error');
+          return;
+        }
+        
+        // Register the new user
+        users[email] = { password, role, name };
+        showStatusMessage('Registration successful! You can now log in.', 'success');
+        
+        // Clear the form
+        document.getElementById('register-form').reset();
+        
+        // Switch to login tab after successful registration
+        setTimeout(() => {
+          document.querySelector('.tab[data-form="login-container"]').click();
+        }, 1500);
+      });
+      
+      // Gmail login
+      document.getElementById('gmail-login').addEventListener('click', function() {
+        handleSocialLogin('Gmail', 'login');
+      });
+      
+      // GitHub login
+      document.getElementById('github-login').addEventListener('click', function() {
+        handleSocialLogin('GitHub', 'login');
+      });
+      
+      // Gmail register
+      document.getElementById('gmail-register').addEventListener('click', function() {
+        handleSocialLogin('Gmail', 'register');
+      });
+      
+      // GitHub register
+      document.getElementById('github-register').addEventListener('click', function() {
+        handleSocialLogin('GitHub', 'register');
+      });
+      
+      function handleSocialLogin(provider, action) {
+        const containerSelector = action === 'login' ? '#login-container' : '#register-container';
+        const roleOption = document.querySelector(`${containerSelector} .user-type-option.active`);
+        const role = roleOption ? roleOption.id.split('-')[0] : null;
+        
+        if (!role) {
+          showStatusMessage('Please select a role first', 'error');
+          return;
+        }
+        
+        showStatusMessage(`Connecting to ${provider}...`, 'success');
+        
+        // Simulate OAuth flow
+        setTimeout(() => {
+          if (action === 'login') {
+            showStatusMessage(`${provider} authentication successful! Redirecting to ${role} dashboard...`, 'success');
+            
+            setTimeout(() => {
+              alert(`Welcome to the ${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard! You logged in with ${provider}.`);
+            }, 1500);
+          } else {
+            showStatusMessage(`Account created with ${provider}! Please complete your profile.`, 'success');
+            
+            // For demo: switch to login after successful registration
+            setTimeout(() => {
+              document.querySelector('.tab[data-form="login-container"]').click();
+            }, 1500);
+          }
+        }, 1500);
+      }
+    });
+    
+  </script>
+</body>
+</html>
