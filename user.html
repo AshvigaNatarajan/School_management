@@ -518,51 +518,34 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Sample user database for demonstration
       const users = {
         'student@school.com': { password: 'student123', role: 'student', name: 'John Student' },
         'teacher@school.com': { password: 'teacher123', role: 'teacher', name: 'Mary Teacher' },
         'admin@school.com': { password: 'admin123', role: 'admin', name: 'Admin User' }
       };
-      
-      // Tab switching functionality
       const tabs = document.querySelectorAll('.tab');
       tabs.forEach(tab => {
         tab.addEventListener('click', function() {
-          // Remove active class from all tabs
           tabs.forEach(t => t.classList.remove('active'));
-          // Add active class to clicked tab
           this.classList.add('active');
           
-          // Hide all form containers
           document.querySelectorAll('.form-container').forEach(container => {
             container.classList.remove('active');
           });
-          
-          // Show the selected form container
           const formId = this.getAttribute('data-form');
           document.getElementById(formId).classList.add('active');
-          
-          // Clear status message
           document.getElementById('status-message').style.display = 'none';
         });
       });
       
-      // User type selection for login
       const loginOptions = document.querySelectorAll('[id^="student-option-"], [id^="teacher-option-"], [id^="admin-option-"]');
       loginOptions.forEach(option => {
         option.addEventListener('click', function() {
-          // Get the form container this option belongs to
           const container = this.id.includes('-login') ? 'login' : 'register';
           const optionsInContainer = document.querySelectorAll(`[id$="-option-${container}"]`);
-          
-          // Remove active class from all options in this container
           optionsInContainer.forEach(opt => opt.classList.remove('active'));
-          
-          // Add active class to clicked option
           this.classList.add('active');
-          
-          // Update placeholder text based on role for the specific form
+        
           const role = this.id.split('-')[0];
           const inputId = container === 'login' ? 'email-login' : 'email-register';
           const emailInput = document.getElementById(inputId);
@@ -581,7 +564,6 @@
         });
       });
       
-      // Show status message
       function showStatusMessage(message, type) {
         const statusEl = document.getElementById('status-message');
         statusEl.textContent = message;
@@ -590,7 +572,6 @@
         statusEl.style.display = 'block';
       }
       
-      // Login form submission
       document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -606,8 +587,7 @@
         
         if (users[email] && users[email].password === password && users[email].role === role) {
           showStatusMessage(`Login successful! Redirecting to ${role} dashboard...`, 'success');
-          
-          // Simulate redirect after successful login
+        
           setTimeout(() => {
             alert(`Welcome to the ${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard, ${users[email].name}!`);
           }, 1500);
@@ -616,7 +596,6 @@
         }
       });
       
-      // Register form submission
       document.getElementById('register-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -642,35 +621,28 @@
           return;
         }
         
-        // Register the new user
         users[email] = { password, role, name };
         showStatusMessage('Registration successful! You can now log in.', 'success');
         
-        // Clear the form
         document.getElementById('register-form').reset();
         
-        // Switch to login tab after successful registration
         setTimeout(() => {
           document.querySelector('.tab[data-form="login-container"]').click();
         }, 1500);
       });
       
-      // Gmail login
       document.getElementById('gmail-login').addEventListener('click', function() {
         handleSocialLogin('Gmail', 'login');
       });
-      
-      // GitHub login
+  
       document.getElementById('github-login').addEventListener('click', function() {
         handleSocialLogin('GitHub', 'login');
       });
       
-      // Gmail register
       document.getElementById('gmail-register').addEventListener('click', function() {
         handleSocialLogin('Gmail', 'register');
       });
-      
-      // GitHub register
+    
       document.getElementById('github-register').addEventListener('click', function() {
         handleSocialLogin('GitHub', 'register');
       });
@@ -687,7 +659,6 @@
         
         showStatusMessage(`Connecting to ${provider}...`, 'success');
         
-        // Simulate OAuth flow
         setTimeout(() => {
           if (action === 'login') {
             showStatusMessage(`${provider} authentication successful! Redirecting to ${role} dashboard...`, 'success');
@@ -698,7 +669,6 @@
           } else {
             showStatusMessage(`Account created with ${provider}! Please complete your profile.`, 'success');
             
-            // For demo: switch to login after successful registration
             setTimeout(() => {
               document.querySelector('.tab[data-form="login-container"]').click();
             }, 1500);
